@@ -73,14 +73,14 @@
         
 //        NSLog(@"data:%@ appInfoData:%@",data,infoData);
         if (sourceArray.count >= 1) {
-            //AppStore内最新App的版本号
+            
             NSDictionary *sourceDict = sourceArray[0];
             NSString *onlineVersion = sourceDict[@"version"];
             
             NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
             NSString *appVersion = infoDict[@"CFBundleShortVersionString"];
-            BOOL hasNewVersion = [self judgeNewVersion:onlineVersion withOldVersion:appVersion];
-            
+            BOOL hasNewVersion = [self isShouldUpdateOnlineVersion:onlineVersion currentVersion:appVersion];
+                        
             HXAppInfoModel *appInfo = [[HXAppInfoModel alloc] init];
             appInfo.onlineVersion = onlineVersion;
             appInfo.currentVersion = appVersion;
@@ -99,26 +99,23 @@
     [sessionTask resume];
 }
 
-//判断当前app版本和AppStore最新app版本大小
-+ (BOOL)judgeNewVersion:(NSString *)appStoreVersion withOldVersion:(NSString *)currentVersion {
+//判断当前app版本和AppStore最新app,版本大小
++ (BOOL)isShouldUpdateOnlineVersion:(NSString *)onlineVersion currentVersion:(NSString *)currentVersion {
     
-    if (appStoreVersion == nil || currentVersion == nil) {
+#ifdef DEBUG
+    NSLog(@"-----onlineVersion:%@ currentVersion:%@",onlineVersion,currentVersion);
+#endif
+    if (onlineVersion == nil ||
+        currentVersion == nil) {
         return NO;
     }
-    NSArray *storeVers = [appStoreVersion componentsSeparatedByString:@"."];
-    NSArray *cuVers = [currentVersion componentsSeparatedByString:@"."];
     
-    NSLog(@"========storeVers:%@  cuVers:%@",storeVers,cuVers);
-    if (storeVers.count == cuVers.count) {
-        for (int i=0; i<storeVers.count; i++) {
-            NSInteger cellVersion_store = [storeVers[i] integerValue];
-            NSInteger cellVersion_current = [cuVers[i] integerValue];
-            if (cellVersion_store > cellVersion_current) {
-                return YES;
-            }
-        }
+    if ([currentVersion compare:onlineVersion options:NSNumericSearch] == NSOrderedAscending) {
+        
+        return YES;
+    }else {
+        return NO;
     }
-    return NO;
 }
 
 @end

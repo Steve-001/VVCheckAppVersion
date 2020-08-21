@@ -6,7 +6,7 @@
 Pod::Spec.new do |spec|
 
  spec.name         = "VVCheckAppVersion"
- spec.version      = "1.0.0"
+ spec.version      = "1.1.0"
  spec.summary      = "A tool of check app version"
  spec.description  = <<-DESC
  A tool of check app version,this tool can help you check app version

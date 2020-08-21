@@ -4,7 +4,7 @@
 //
 //  Created by zhx on 2018/5/10.
 //  Copyright © 2018年 zhx. All rights reserved.
-//
+// app版本号检测，强制更新
 
 #import <Foundation/Foundation.h>
 @class HXAppInfoModel;
@@ -13,10 +13,9 @@
 
 + (void)cheakAppVersion:(NSString *)appID;
 + (void)cheakAppVersion:(NSString *)appID completionHandler:(void (^) (HXAppInfoModel *appInfo))handler;
-+ (BOOL)judgeNewVersion:(NSString *)appStoreVersion withOldVersion:(NSString *)currentVersion;
++ (BOOL)isShouldUpdateOnlineVersion:(NSString *)onlineVersion currentVersion:(NSString *)currentVersion;
 
 + (void)showUpdateAppVersionAlterViewWithTrackViewUrl:(NSString *)trackViewUrl showCancelAction:(BOOL)showCancelAction;
-
 
 
 @end
